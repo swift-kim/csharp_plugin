@@ -22,10 +22,10 @@ namespace Runner
                     }
                     else
                     {
-                        throw new FlutterException("", "Failed to get platform version.", "");
+                        throw new FlutterException("error", "Failed to get platform version.", null);
                     }
                 }
-                return null;
+                throw new MissingPluginException();
             });
         }
 
