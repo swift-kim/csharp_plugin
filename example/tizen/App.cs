@@ -1,4 +1,5 @@
 ﻿using Tizen.Flutter.Embedding;
+using Tizen.System;
 
 namespace Runner
 {
@@ -9,6 +10,23 @@ namespace Runner
             base.OnCreate();
 
             GeneratedPluginRegistrant.RegisterPlugins(this);
+
+            var channel = new MethodChannel("csharp_plugin");
+            channel.SetMethodCallHandler(async (call) =>
+            {
+                if (call.Method == "getPlatformVersion")
+                {
+                    if (Information.TryGetValue("http://tizen.org/feature/platform.version", out string version))
+                    {
+                        return version;
+                    }
+                    else
+                    {
+                        throw new FlutterException("", "Failed to get platform version.", "");
+                    }
+                }
+                return null;
+            });
         }
 
         static void Main(string[] args)
